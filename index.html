@@ -25,7 +25,7 @@
     </style>
 </head>
 <body onload="playFullscreenVideo()">
-    <video id="myVideo" autoplay muted playsinline>
+    <video id="myVideo" autoplay muted preload="auto" playsinline>
         <source src="video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -34,7 +34,8 @@
         function playFullscreenVideo() {
             const videoElement = document.getElementById("myVideo");
 
-            // Unmute and play the video automatically
+            // Force reload the video on page load
+            videoElement.load();
             videoElement.muted = false;
             videoElement.play();
 
