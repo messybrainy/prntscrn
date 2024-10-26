@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fullscreen Video</title>
     <style>
-        /* Make sure the body and html elements are full height with no margin */
+        /* Full height and no scrollbars */
         html, body {
             height: 100%;
             margin: 0;
             overflow: hidden;
         }
 
-        /* Make the video fill the viewport */
+        /* Video fills viewport without interaction */
         #myVideo {
             position: absolute;
             top: 0;
@@ -20,11 +20,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            pointer-events: none; /* Prevents all interactions */
         }
     </style>
 </head>
 <body onload="playFullscreenVideo()">
-    <video id="myVideo" autoplay>
+    <video id="myVideo" autoplay muted playsinline>
         <source src="video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -33,11 +34,11 @@
         function playFullscreenVideo() {
             const videoElement = document.getElementById("myVideo");
 
-            // Unmute the video and set autoplay
+            // Unmute and play the video automatically
             videoElement.muted = false;
             videoElement.play();
 
-            // Request fullscreen
+            // Request fullscreen on page load
             if (videoElement.requestFullscreen) {
                 videoElement.requestFullscreen();
             } else if (videoElement.mozRequestFullScreen) { // Firefox
@@ -49,14 +50,10 @@
             }
         }
 
-        // Add an event listener to play in fullscreen when the user clicks the video, in case the browser prevents autoplay
-        document.getElementById("myVideo").addEventListener("click", () => {
-            const videoElement = document.getElementById("myVideo");
-            if (videoElement.requestFullscreen) {
-                videoElement.requestFullscreen();
-            }
-            videoElement.muted = false;
-            videoElement.play();
+        // Prevent interaction on click, in case the browser shows controls
+        document.getElementById("myVideo").addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
         });
     </script>
 </body>
