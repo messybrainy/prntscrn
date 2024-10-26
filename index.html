@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Video</title>
+    <title>Fullscreen Video with Timer</title>
     <style>
         /* Full height and no scrollbars */
         html, body {
@@ -56,11 +56,13 @@
             countdownElement.style.display = 'none';
             videoElement.style.display = 'block';
 
-            // Unmute and play the video automatically
+            // Attempt to unmute and play the video automatically
             videoElement.muted = false;
-            videoElement.play();
+            videoElement.play().catch(error => {
+                console.log("Autoplay was prevented:", error);
+            });
 
-            // Request fullscreen
+            // Request fullscreen for the video element
             if (videoElement.requestFullscreen) {
                 videoElement.requestFullscreen();
             } else if (videoElement.mozRequestFullScreen) { // Firefox
