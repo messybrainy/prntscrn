@@ -6,7 +6,7 @@
     <title>Fullscreen Video</title>
 </head>
 <body onload="playFullscreenVideo()">
-    <video id="myVideo" width="100%" height="100%" autoplay muted controls>
+    <video id="myVideo" width="100%" height="100%" autoplay controls>
         <source src="video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -14,21 +14,32 @@
     <script>
         function playFullscreenVideo() {
             const videoElement = document.getElementById("myVideo");
-            
-            // Request fullscreen when the page loads
+
+            // Unmute the video and set autoplay
+            videoElement.muted = false;
+            videoElement.play();
+
+            // Request fullscreen
             if (videoElement.requestFullscreen) {
                 videoElement.requestFullscreen();
             } else if (videoElement.mozRequestFullScreen) { // Firefox
                 videoElement.mozRequestFullScreen();
-            } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+            } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
                 videoElement.webkitRequestFullscreen();
             } else if (videoElement.msRequestFullscreen) { // IE/Edge
                 videoElement.msRequestFullscreen();
             }
-            
-            // Start video playback in fullscreen
-            videoElement.play();
         }
+
+        // Add an event listener to play in fullscreen when the user clicks the video, in case the browser prevents autoplay
+        document.getElementById("myVideo").addEventListener("click", () => {
+            const videoElement = document.getElementById("myVideo");
+            if (videoElement.requestFullscreen) {
+                videoElement.requestFullscreen();
+            }
+            videoElement.muted = false;
+            videoElement.play();
+        });
     </script>
 </body>
 </html>
