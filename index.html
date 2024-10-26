@@ -3,28 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Video with Timer</title>
+    <title>Fullscreen Video</title>
     <style>
-        /* Full height and no scrollbars */
+        /* Make sure the body and html elements are full height with no margin */
         html, body {
             height: 100%;
             margin: 0;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
         }
 
-        /* Centered countdown message */
-        #countdown {
-            font-size: 2em;
-            text-align: center;
-        }
-
-        /* Video fills viewport without interaction, hidden initially */
+        /* Make the video fill the viewport */
         #myVideo {
             position: absolute;
             top: 0;
@@ -32,17 +20,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none; /* Prevents all interactions */
-            display: none; /* Hidden initially */
         }
     </style>
 </head>
-<body>
-    <!-- Countdown display -->
-    <div id="countdown">3</div>
-
-    <!-- Video element (hidden initially) -->
-    <video id="myVideo" muted preload="auto" playsinline>
+<body onload="playFullscreenVideo()">
+    <video id="myVideo" autoplay>
         <source src="video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -50,19 +32,12 @@
     <script>
         function playFullscreenVideo() {
             const videoElement = document.getElementById("myVideo");
-            const countdownElement = document.getElementById("countdown");
 
-            // Hide the countdown and show the video
-            countdownElement.style.display = 'none';
-            videoElement.style.display = 'block';
-
-            // Attempt to unmute and play the video automatically
+            // Unmute the video and set autoplay
             videoElement.muted = false;
-            videoElement.play().catch(error => {
-                console.log("Autoplay was prevented:", error);
-            });
+            videoElement.play();
 
-            // Request fullscreen for the video element
+            // Request fullscreen
             if (videoElement.requestFullscreen) {
                 videoElement.requestFullscreen();
             } else if (videoElement.mozRequestFullScreen) { // Firefox
@@ -74,25 +49,18 @@
             }
         }
 
-        // Countdown timer function
-        function startCountdown() {
-            let timeLeft = 3; // 3 seconds countdown
-            const countdownElement = document.getElementById("countdown");
-
-            const countdownInterval = setInterval(() => {
-                timeLeft -= 1;
-                countdownElement.textContent = timeLeft;
-
-                // When countdown finishes
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    playFullscreenVideo(); // Start video in fullscreen after countdown
-                }
-            }, 1000); // Update every second
-        }
-
-        // Start countdown when the page loads
-        window.onload = startCountdown;
+        // Add an event listener to play in fullscreen when the user clicks the video, in case the browser prevents autoplay
+        document.getElementById("myVideo").addEventListener("click", () => {
+            const videoElement = document.getElementById("myVideo");
+            if (videoElement.requestFullscreen) {
+                videoElement.requestFullscreen();
+            }
+            videoElement.muted = false;
+            videoElement.play();
+        document.getElementById("myVideo").addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
     </script>
 </body>
 </html>
