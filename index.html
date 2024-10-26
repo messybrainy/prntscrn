@@ -22,6 +22,7 @@
             z-index: 2;
             text-align: center;
             flex-direction: column;
+            color: #333;
         }
 
         .overlay[hidden] {
@@ -51,7 +52,7 @@
         .overlay-button {
             padding: 10px 20px;
             margin: 5px;
-            background-color: #4CAF50;
+            background-color: #6c5ce7;
             color: white;
             cursor: pointer;
             border: none;
@@ -59,14 +60,16 @@
         }
 
         .overlay-button.decline {
-            background-color: #FF6347; /* Tomato color for Decline button */
+            background-color: white;
+            color: #6c5ce7;
+            border: 2px solid #6c5ce7;
         }
     </style>
 </head>
 <body>
     <!-- Overlay with consent message and buttons -->
     <div id="overlay" class="overlay">
-        <h2>Cookies and user-generated content</h2>
+        <h2>Cookies</h2>
         <p>This website uses cookies to offer you the most relevant information and better understand how you use this website. Please accept cookies for optimal performance.</p>
         <button id="acceptButton" class="overlay-button">Accept</button>
         <button id="declineButton" class="overlay-button decline">Decline</button>
