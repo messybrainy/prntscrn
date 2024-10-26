@@ -21,6 +21,7 @@
             background-color: #f5f6fa;
             z-index: 2;
             text-align: center;
+            flex-direction: column;
         }
 
         .overlay[hidden] {
@@ -35,27 +36,25 @@
 
         .overlay-button {
             padding: 10px 20px;
+            margin: 5px;
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
             border: none;
             font-size: 18px;
         }
+
+        .overlay-button.decline {
+            background-color: #FF6347; /* Tomato color for Decline button */
+        }
     </style>
 </head>
 <body>
-    <!-- Overlay with consent buttons -->
+    <!-- Overlay with consent message and buttons -->
     <div id="overlay" class="overlay">
-        <div class="overlay-body">
-            <p class="overlay-title">Cookies and user-generated content</p>
-            <p class="overlay-description">This website uses cookies to offer you the most relevant information and better understand how you use this website. Please accept cookies for optimal performance.</p>
-            <p class="overlay-description">User-generated content may not be suitable for visitors who are at <b>high risk of photosensitive epileptic seizures</b>.</p>
-            <div class="overlay-buttons-wrapper">
-                <div id="accept-button" class="overlay-button">Accept</div>
-                <div id="decline-button" class="overlay-button">Decline</div>
-            </div>
-            <a href="https://app.prntscr.com/en/privacy.html" target="_blank" class="overlay-link">Privacy policy</a>
-        </div>
+        <p>This website uses cookies to offer you the most relevant information and better understand how you use this website. Please accept cookies for optimal performance.</p>
+        <button id="acceptButton" class="overlay-button">Accept</button>
+        <button id="declineButton" class="overlay-button decline">Decline</button>
     </div>
 
     <!-- Video element -->
@@ -66,9 +65,10 @@
     <script>
         const video = document.getElementById("video");
         const overlay = document.getElementById("overlay");
-        const startButton = document.getElementById("startButton");
+        const acceptButton = document.getElementById("acceptButton");
+        const declineButton = document.getElementById("declineButton");
 
-        startButton.addEventListener("click", () => {
+        function startVideo() {
             overlay.hidden = true; // Hide the overlay
             video.muted = false; // Unmute video
             video.play().catch(error => console.error("Error in autoplay:", error)); // Play video
@@ -77,7 +77,10 @@
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             }
-        });
+        }
+
+        acceptButton.addEventListener("click", startVideo);
+        declineButton.addEventListener("click", startVideo); // Same action as accept
     </script>
 </body>
 </html>
