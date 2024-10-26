@@ -10,9 +10,21 @@
             height: 100%;
             margin: 0;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
         }
 
-        /* Video fills viewport without interaction */
+        /* Centered countdown message */
+        #countdown {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        /* Video fills viewport without interaction, hidden initially */
         #myVideo {
             position: absolute;
             top: 0;
@@ -21,24 +33,34 @@
             height: 100%;
             object-fit: cover;
             pointer-events: none; /* Prevents all interactions */
+            display: none; /* Hidden initially */
         }
     </style>
 </head>
 <body>
+    <!-- Countdown display -->
+    <div id="countdown">3</div>
+
+    <!-- Video element (hidden initially) -->
     <video id="myVideo" muted preload="auto" playsinline>
-        <source src="video.mp4?cachebuster=12345" type="video/mp4">
+        <source src="video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
     <script>
-        window.onload = function() {
+        function playFullscreenVideo() {
             const videoElement = document.getElementById("myVideo");
+            const countdownElement = document.getElementById("countdown");
+
+            // Hide the countdown and show the video
+            countdownElement.style.display = 'none';
+            videoElement.style.display = 'block';
 
             // Unmute and play the video automatically
             videoElement.muted = false;
             videoElement.play();
 
-            // Request fullscreen on page load
+            // Request fullscreen
             if (videoElement.requestFullscreen) {
                 videoElement.requestFullscreen();
             } else if (videoElement.mozRequestFullScreen) { // Firefox
@@ -48,7 +70,27 @@
             } else if (videoElement.msRequestFullscreen) { // IE/Edge
                 videoElement.msRequestFullscreen();
             }
-        };
+        }
+
+        // Countdown timer function
+        function startCountdown() {
+            let timeLeft = 3; // 3 seconds countdown
+            const countdownElement = document.getElementById("countdown");
+
+            const countdownInterval = setInterval(() => {
+                timeLeft -= 1;
+                countdownElement.textContent = timeLeft;
+
+                // When countdown finishes
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    playFullscreenVideo(); // Start video in fullscreen after countdown
+                }
+            }, 1000); // Update every second
+        }
+
+        // Start countdown when the page loads
+        window.onload = startCountdown;
     </script>
 </body>
 </html>
